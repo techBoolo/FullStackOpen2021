@@ -23,6 +23,8 @@ let notes = [
   }
 ]
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
@@ -46,6 +48,32 @@ app.delete('/api/notes/:id', (req, res) => {
   notes = notes.filter(note => note.id !== Number(id));
 
   res.status(204).end();
+})
+
+const generateId = () => {
+  const maxId = notes.length > 0
+    ? Math.max(...notes.map(n => n.id))
+    : 0
+
+    return maxId + 1;
+}
+app.post('/api/notes', (req, res) => {
+
+  const body = req.body;
+  if(!body.content) {
+    return res.status(400).json({
+      error: "Content missing"
+    })
+  }
+
+  const note = {
+    content: body.content,
+    important: body.important || false,
+    date: new Date(),
+    id: generateId()
+  }
+  notes = [...notes, note ]
+  res.json(note);
 })
 
 module.exports = app;

@@ -1,0 +1,17 @@
+# Global definitions
+
+http://localhost:3001
+Content-Type: application/json
+
+content = vim-rest-console
+important = true
+
+--
+
+--
+POST /api/notes
+{
+  "content": "vim-rest-console",
+  "important": true
+}
+

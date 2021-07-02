@@ -23,7 +23,20 @@ let notes = [
   }
 ]
 
+const reqLogger = (req, res, next) => {
+  console.log("Method:", req.method);
+  console.log("Path:", req.path);
+  console.log("Body:", req.body);
+  console.log("---");
+  next();
+}
+
+const unknownEndPoint = (req, res, next) => {
+  res.status(404).send({ error: "unknown endpoint"})
+}
+
 app.use(express.json());
+app.use(reqLogger);
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -75,5 +88,6 @@ app.post('/api/notes', (req, res) => {
   notes = [...notes, note ]
   res.json(note);
 })
+app.use(unknownEndPoint);
 
 module.exports = app;

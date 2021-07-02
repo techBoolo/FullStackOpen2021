@@ -1,0 +1,23 @@
+{
+  "name": "fullstackopen2021-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techBoolo/FullStackOpen2021-Nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/techBoolo/FullStackOpen2021-Nodejs/issues"
+  },
+  "homepage": "https://github.com/techBoolo/FullStackOpen2021-Nodejs#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

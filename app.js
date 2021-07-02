@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const notes = [
+let notes = [
   {
     id: 1,
     content: "html is easy",
@@ -29,6 +29,23 @@ app.get('/', (req, res) => {
 
 app.get('/api/notes', (req, res) => {
   res.json(notes);
+})
+
+app.get('/api/notes/:id', (req, res) => {
+  const id = req.params.id;
+  const note = notes.find(note => note.id === Number(id));
+  if(note) {
+    res.json(note);
+  } else {
+    res.status(404).end();
+  }
+})
+
+app.delete('/api/notes/:id', (req, res) => {
+  const id = req.params.id;
+  notes = notes.filter(note => note.id !== Number(id));
+
+  res.status(204).end();
 })
 
 module.exports = app;

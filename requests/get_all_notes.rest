@@ -1,0 +1,13 @@
+# Global definitions
+
+http://localhost:3001
+
+Accept: application/json
+Content-Type: application/json
+
+Authorization: Bearer xxxxxxxxxxxxx
+
+--
+
+--
+GET /api/notes

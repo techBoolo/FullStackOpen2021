@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/techBoolo/FullStackOpen2021-Nodejs#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
   }
 }

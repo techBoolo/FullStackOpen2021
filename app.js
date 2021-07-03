@@ -1,4 +1,5 @@
 const express = require('express');
+const logger = require('morgan');
 
 const app = express();
 let people = [
@@ -24,7 +25,23 @@ let people = [
   }
 ]
 
+
 app.use(express.json());
+
+logger.token('data', (req, res) => {
+  return JSON.stringify(req.body)
+})
+
+app.use(logger((tokens, req, res) => {
+ return [
+   tokens.method(req, res),
+   tokens.url(req, res),
+   tokens.status(req, res),
+   tokens.res(req, res, 'content-length'), '- ',
+   tokens['response-time'](req, res),  'ms',
+   tokens.data(req, res)
+  ].join(' ')
+}))
 
 app.get('/info', (req, res, next) => {
   res.send(`<div>

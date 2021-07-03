@@ -2,6 +2,6 @@ http://localhost:3001
 
 POST /api/people
 {
-  "name": "joe",
-  "number": "23-12-435454"
+  "name": "poppen",
+  "number": "29-33-532454"
 }

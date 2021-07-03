@@ -24,6 +24,8 @@ let people = [
   }
 ]
 
+app.use(express.json());
+
 app.get('/info', (req, res, next) => {
   res.send(`<div>
         <p>Phonebook has info for ${people.length} people</p>
@@ -49,6 +51,16 @@ app.delete('/api/people/:id', (req, res, next) => {
   const id = Number(req.params.id);
   people = people.filter(p => p.id !== id);
   res.status(204).end();
+})
+
+app.post('/api/people', (req, res, next) => {
+  const body = req.body;
+  const person = {
+    ...body,
+    id: Math.floor(Math.random()*100000) + 1
+  }
+  people = [ ...people, person ];
+  res.status(201).json(person)
 })
 
 module.exports = app;

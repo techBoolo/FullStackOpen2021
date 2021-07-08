@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
 
@@ -35,6 +36,7 @@ const unknownEndPoint = (req, res, next) => {
   res.status(404).send({ error: "unknown endpoint"})
 }
 
+app.use(cors());
 app.use(express.json());
 app.use(reqLogger);
 
@@ -88,6 +90,7 @@ app.post('/api/notes', (req, res) => {
   notes = [...notes, note ]
   res.json(note);
 })
+
 app.use(unknownEndPoint);
 
 module.exports = app;

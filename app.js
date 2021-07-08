@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
+const cors = require('cors');
 
 const app = express();
 let people = [
@@ -26,6 +27,7 @@ let people = [
 ]
 
 
+app.use(cors());
 app.use(express.json());
 
 logger.token('data', (req, res) => {

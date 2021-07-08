@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/techBoolo/FullStackOpen2021-Nodejs#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "morgan": "^1.10.0"
   }

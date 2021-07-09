@@ -17,7 +17,15 @@ const reqLogger = (req, res, next) => {
 
 // handle unknown url/endpoint
 const unknownEndPoint = (req, res, next) => {
-  res.status(404).send({ error: "unknown endpoint"})
+  const error = new Error("Route not found");
+  error.statusCode = 404;
+  next(error);
+}
+// error handler
+const errorHandler = (error, req, res, next) => {
+  res.statusCode = error.statusCode || 500
+  console.error(error.message);
+  res.json({ error : { message: error.message}});
 }
 
 app.use(cors());
@@ -25,35 +33,37 @@ app.use(express.json());
 app.use(express.static('build'));
 app.use(reqLogger);
 
-app.get('/api/notes', (req, res) => {
-  Note.find({}).then(notes => {
-    res.json(notes);
-  })
+app.get('/api/notes', (req, res, next) => {
+  Note.find({})
+    .then(notes => {
+      res.json(notes);
+    })
+    .catch(error => next(error))
 })
 
-app.get('/api/notes/:id', (req, res) => {
+app.get('/api/notes/:id', (req, res, next) => {
   const id = req.params.id;
   Note.find({_id: new mongoose.Types.ObjectId(id)})
     .then(note => {
-      res.json(note);
+      if(note){
+        res.json(note);
+      }else {
+        res.status(404).end()
+      }
     })
-    .catch(error => {
-      res.status(404).end();
-    })
+    .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res, next) => {
   const id = req.params.id;
   Note.deleteOne({_id: new mongoose.Types.ObjectId(id)})
     .then(result => {
       res.status(204).send(result);
     })
-    .catch(error => {
-      res.status(404).end(error);    
-    })
+    .catch(error => next(error))
 })
 
-app.post('/api/notes', (req, res) => {
+app.post('/api/notes', (req, res, next) => {
   const body = req.body;
   if(!body.content) {
     return res.status(400).json({
@@ -69,11 +79,10 @@ app.post('/api/notes', (req, res) => {
     .then(result => {
       res.json(note);
     })
-    .catch(error => {
-      res.status(400).end() 
-    })
+    .catch(error => next(error))
 })
 
 app.use(unknownEndPoint);
+app.use(errorHandler);
 
 module.exports = app;

@@ -24,7 +24,7 @@ const unknownEndPoint = (req, res, next) => {
 // error handler
 const errorHandler = (error, req, res, next) => {
   res.statusCode = error.statusCode || 500
-  console.error(error.message);
+  console.error(error.name, error.message);
   res.json({ error : { message: error.message}});
 }
 
@@ -65,11 +65,7 @@ app.delete('/api/notes/:id', (req, res, next) => {
 
 app.post('/api/notes', (req, res, next) => {
   const body = req.body;
-  if(!body.content) {
-    return res.status(400).json({
-      error: "Content missing"
-    })
-  }
+
   const note = new Note({
     content: body.content,
     important: body.important || false,

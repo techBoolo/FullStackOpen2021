@@ -37,6 +37,7 @@ const Note = mongoose.model('Note', noteSchema);
 //    }) 
 //    mongoose.connection.close();
 //  })
+//
 //  Fetch important notes only
 Note.find({ important: true})
   .then(result => {

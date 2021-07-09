@@ -1,29 +1,11 @@
 const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
+const Note = require('./models/note');
 
 const app = express();
 
-let notes = [
-  {
-    id: 1,
-    content: "html is easy",
-    date: new Date(),
-    important: true
-  },
-  {
-    id: 2,
-    content: "Browser execute js",
-    date: new Date(),
-    important: false
-  },
-  {
-    id: 3,
-    content: "GET and POST are methods of HTTP protocol",
-    date: new Date(),
-    important: true
-  }
-]
-
+// logger middleware
 const reqLogger = (req, res, next) => {
   console.log("Method:", req.method);
   console.log("Path:", req.path);
@@ -32,6 +14,7 @@ const reqLogger = (req, res, next) => {
   next();
 }
 
+// handle unknown url/endpoint
 const unknownEndPoint = (req, res, next) => {
   res.status(404).send({ error: "unknown endpoint"})
 }
@@ -42,7 +25,9 @@ app.use(express.static('build'));
 app.use(reqLogger);
 
 app.get('/api/notes', (req, res) => {
-  res.json(notes);
+  Note.find({}).then(notes => {
+    res.json(notes);
+  })
 })
 
 app.get('/api/notes/:id', (req, res) => {

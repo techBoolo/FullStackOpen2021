@@ -58,7 +58,7 @@ app.delete('/api/notes/:id', (req, res, next) => {
   const id = req.params.id;
   Note.deleteOne({_id: new mongoose.Types.ObjectId(id)})
     .then(result => {
-      res.status(204).send(result);
+      res.json(result);
     })
     .catch(error => next(error))
 })
@@ -78,6 +78,19 @@ app.post('/api/notes', (req, res, next) => {
   note.save()
     .then(result => {
       res.json(note);
+    })
+    .catch(error => next(error))
+})
+
+app.put('/api/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+  const body = req.body;
+  const note = {
+    important: body.important 
+  }
+  Note.findOneAndUpdate({_id: new mongoose.Types.ObjectId(id)},{ $set: note}, {returnOriginal: false} )
+    .then(response => {
+      res.json(response) 
     })
     .catch(error => next(error))
 })
